@@ -23,7 +23,7 @@ export default function App() {
   const formHandler = (event) => {
     event.preventDefault();
     const updatedCountries = destination.filter((des) => des !== countries);
-    setDestination([...destination, { continents, countries }]);
+    setDestination([...updatedCountries, { continents, countries }]);
     setFormSubmitted(true);
   };
 
@@ -70,6 +70,69 @@ export default function App() {
     );
   };
 
+  const [genre, setGenre] = useState("");
+  const [preference, setPreference] = useState("");
+  const [formSubmitted1, setFormSubmitted1] = useState(false);
+
+  const questions1 = {
+    question: "Which type of music do you prefer?",
+    options: {
+      Rock: ["Classic Rock", "Alternative Rock", "Indie Rock"],
+      Pop: ["Pop Rock", "Synth-pop", "Electropop"],
+      "Hip Hop": ["East Coast Hip Hop", "West Coast Hip Hop", "Trap Music"],
+    },
+  };
+
+  const onChangeHandler = (event) => {
+    setGenre(event.target.value);
+  };
+
+  const formHandler1 = (event) => {
+    event.preventDefault();
+    setFormSubmitted1(true);
+  };
+
+  const SelectedGenreComponent = () => {
+    if (genre) {
+      return (
+        <div>
+          <p>{questions1.question}</p>
+          {questions1.options[genre].map((option, index) => (
+            <li key={index}>
+              <input
+                type="radio"
+                value={option}
+                name="genreOptions"
+                onChange={(event) => setPreference(event.target.value)}
+              />
+              {option}
+            </li>
+          ))}
+        </div>
+      );
+    }
+  };
+
+  const MusicPreference = () => {
+    return (
+      <div>
+        <form onSubmit={formHandler1}>
+          <label>Select Your Prefered Genre: </label>
+          <select onChange={onChangeHandler}>
+            <option value="">--Select Genre--</option>
+            <option value="Rock">Rock</option>
+            <option value="Pop">Pop</option>
+            <option value="Hip Hop">Hip Hop</option>
+          </select>
+          <br />
+          <br />
+          <SelectedGenreComponent />
+          <button>Submit</button>
+        </form>
+      </div>
+    );
+  };
+
   return (
     <div className="App">
       <h1>Travel Destination App</h1>
@@ -86,6 +149,16 @@ export default function App() {
               </div>
             );
           })}
+        </div>
+      )}
+      <h1>Music Preference App</h1>
+      {!formSubmitted1 ? (
+        <MusicPreference />
+      ) : (
+        <div>
+          <h2>Thank you for Sharing your preference!</h2>
+          <p>Selected Genre: {genre}</p>
+          <p>Selected Sub Genre: {preference}</p>
         </div>
       )}
     </div>
